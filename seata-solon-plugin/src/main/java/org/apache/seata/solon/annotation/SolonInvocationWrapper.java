@@ -6,6 +6,8 @@ import org.noear.solon.core.aspect.Invocation;
 import java.lang.reflect.Method;
 
 /**
+ * Solon invocation wrapper
+ *
  * @author noear 2024/10/25 created
  */
 public class SolonInvocationWrapper implements InvocationWrapper {

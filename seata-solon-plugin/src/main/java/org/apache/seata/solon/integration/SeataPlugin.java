@@ -35,19 +35,22 @@ import org.noear.solon.net.http.HttpExtensionManager;
 import javax.sql.DataSource;
 
 /**
+ * Seata for solon plugin (like module lifecycle)
+ *
  * @author noear 2024/10/25 created
  */
 public class SeataPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
+        //for config
         context.beanMake(PropertiesAutoConfiguration.class);
         context.beanMake(SeataAutoConfiguration.class);
 
         SeataProperties seataProperties = context.getBean(SeataProperties.class);
 
-        //添加数据源代理(优先级要比较高)
+        //for dataSource proxy
         context.subWrapsOfType(DataSource.class, bw -> {
-            bw.proxySet(new SeataAutoDataSourceProxyCreator(seataProperties.getDataSourceProxyMode()));
+            bw.proxySet(new SeataAutoDataSourceProxyCreator(bw, seataProperties.getDataSourceProxyMode()));
         });
 
         //for nami
@@ -63,6 +66,7 @@ public class SeataPlugin implements Plugin {
         //for solon
         context.app().routerInterceptor(Integer.MIN_VALUE, new SeataSolonRouterInterceptor());
 
+        //for annotation
         GlobalTransactionalInterceptor globalTransactionalInterceptor = new GlobalTransactionalInterceptor();
         context.beanInterceptorAdd(GlobalLock.class, globalTransactionalInterceptor);
         context.beanInterceptorAdd(GlobalTransactional.class, globalTransactionalInterceptor);

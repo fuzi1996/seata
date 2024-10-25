@@ -18,9 +18,11 @@ public class SeataAutoDataSourceProxyCreator implements BeanWrap.Proxy {
     private static final Logger LOGGER = LoggerFactory.getLogger(SeataAutoDataSourceProxyCreator.class);
 
     private final String dataSourceProxyMode;
+    private final BeanWrap dsWrap;
 
-    public SeataAutoDataSourceProxyCreator(String dataSourceProxyMode) {
+    public SeataAutoDataSourceProxyCreator(BeanWrap dsWrap,String dataSourceProxyMode) {
         this.dataSourceProxyMode = dataSourceProxyMode;
+        this.dsWrap = dsWrap;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class SeataAutoDataSourceProxyCreator implements BeanWrap.Proxy {
             DataSource origin = (DataSource) bean;
             SeataDataSourceProxy proxy = buildProxy(origin, dataSourceProxyMode);
             DataSourceProxyHolder.put(origin, proxy);
-            //LOGGER.info("Auto proxy data source '{}' by '{}' mode.", beanName, dataSourceProxyMode);
+            LOGGER.info("Auto proxy data source '{}' by '{}' mode.", dsWrap.name(), dataSourceProxyMode);
             return proxy;
         }
 
