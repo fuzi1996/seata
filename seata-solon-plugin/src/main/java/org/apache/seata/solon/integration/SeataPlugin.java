@@ -1,0 +1,70 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.seata.solon.integration;
+
+import org.apache.seata.solon.annotation.GlobalTransactionalInterceptor;
+import org.apache.seata.solon.annotation.datasource.SeataAutoDataSourceProxyCreator;
+import org.apache.seata.solon.autoconfigure.SeataAutoConfiguration;
+import org.apache.seata.solon.integration.intercept.SeataHttpExtension;
+import org.apache.seata.solon.integration.intercept.SeataNamiFilter;
+import org.apache.seata.solon.integration.intercept.SeataSolonRouterInterceptor;
+import org.apache.seata.solon.autoconfigure.PropertiesAutoConfiguration;
+import org.apache.seata.solon.autoconfigure.properties.SeataProperties;
+import org.apache.seata.spring.annotation.GlobalLock;
+import org.apache.seata.spring.annotation.GlobalTransactional;
+import org.noear.nami.NamiManager;
+import org.noear.solon.core.AppContext;
+import org.noear.solon.core.Plugin;
+import org.noear.solon.core.util.ClassUtil;
+import org.noear.solon.net.http.HttpExtensionManager;
+
+import javax.sql.DataSource;
+
+/**
+ * @author noear 2024/10/25 created
+ */
+public class SeataPlugin implements Plugin {
+    @Override
+    public void start(AppContext context) throws Throwable {
+        context.beanMake(PropertiesAutoConfiguration.class);
+        context.beanMake(SeataAutoConfiguration.class);
+
+        SeataProperties seataProperties = context.getBean(SeataProperties.class);
+
+        //添加数据源代理(优先级要比较高)
+        context.subWrapsOfType(DataSource.class, bw -> {
+            bw.proxySet(new SeataAutoDataSourceProxyCreator(seataProperties.getDataSourceProxyMode()));
+        });
+
+        //for nami
+        if (ClassUtil.hasClass(() -> NamiManager.class)) {
+            NamiManager.reg(new SeataNamiFilter());
+        }
+
+        //for http-utils
+        if (ClassUtil.hasClass(() -> HttpExtensionManager.class)) {
+            HttpExtensionManager.add(new SeataHttpExtension());
+        }
+
+        //for solon
+        context.app().routerInterceptor(Integer.MIN_VALUE, new SeataSolonRouterInterceptor());
+
+        GlobalTransactionalInterceptor globalTransactionalInterceptor = new GlobalTransactionalInterceptor();
+        context.beanInterceptorAdd(GlobalLock.class, globalTransactionalInterceptor);
+        context.beanInterceptorAdd(GlobalTransactional.class, globalTransactionalInterceptor);
+    }
+}
