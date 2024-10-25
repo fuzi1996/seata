@@ -24,7 +24,7 @@ public class SeataAutoDataSourceProxyCreator implements BeanWrap.Proxy {
     }
 
     @Override
-    public Object getProxy(AppContext ctx, String beanName, Object bean, Constructor beanConstructor, Object[] beanConstructorArgs) {
+    public Object getProxy(AppContext ctx, Object bean, Constructor beanConstructor, Object[] beanConstructorArgs) {
         // we only care DataSource bean
         if (!(bean instanceof DataSource)) {
             return bean;
@@ -36,7 +36,7 @@ public class SeataAutoDataSourceProxyCreator implements BeanWrap.Proxy {
             DataSource origin = (DataSource) bean;
             SeataDataSourceProxy proxy = buildProxy(origin, dataSourceProxyMode);
             DataSourceProxyHolder.put(origin, proxy);
-            LOGGER.info("Auto proxy data source '{}' by '{}' mode.", beanName, dataSourceProxyMode);
+            //LOGGER.info("Auto proxy data source '{}' by '{}' mode.", beanName, dataSourceProxyMode);
             return proxy;
         }
 
