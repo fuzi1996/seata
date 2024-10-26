@@ -32,7 +32,7 @@
     <description>solon-plugin for Seata built with Maven</description>
 
     <properties>
-        <solon.version>3.0.2</solon.version>
+        <solon.version>3.0.3-SNAPSHOT</solon.version>
     </properties>
 
     <dependencies>
@@ -52,7 +52,7 @@
         <!--solon-->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon</artifactId>
+            <artifactId>solon-data</artifactId>
             <version>${solon.version}</version>
         </dependency>
 
@@ -77,4 +77,25 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
