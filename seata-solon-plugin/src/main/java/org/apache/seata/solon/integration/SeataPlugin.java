@@ -47,11 +47,12 @@ public class SeataPlugin implements Plugin {
         context.beanMake(SeataAutoConfiguration.class);
 
         SeataProperties seataProperties = context.getBean(SeataProperties.class);
+        SeataAutoDataSourceProxyCreator seataAutoDataSourceProxyCreator = new SeataAutoDataSourceProxyCreator(seataProperties.getDataSourceProxyMode());
 
         //for dataSource proxy
         context.subWrapsOfType(DataSource.class, bw -> {
-            bw.proxySet(new SeataAutoDataSourceProxyCreator(bw, seataProperties.getDataSourceProxyMode()));
-        });
+            bw.proxySet(seataAutoDataSourceProxyCreator);
+        }, Integer.MIN_VALUE);
 
         //for nami
         if (ClassUtil.hasClass(() -> NamiManager.class)) {

@@ -17,29 +17,31 @@
 package org.apache.seata.solon.annotation.datasource;
 
 import org.apache.seata.rm.datasource.SeataDataSourceProxy;
+import org.apache.seata.rm.datasource.xa.DataSourceProxyXA;
+import org.noear.solon.data.datasource.RoutingDataSource;
 
 import javax.sql.DataSource;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 /**
- * the type data source proxy holder
- *
+ * @author noear 2024/10/26 created
  */
-public class DataSourceProxyHolder {
-
-    private static final Map<DataSource, SeataDataSourceProxy> PROXY_MAP = new ConcurrentHashMap<>(4);
-
-    static SeataDataSourceProxy put(DataSource origin, SeataDataSourceProxy proxy) {
-        return PROXY_MAP.put(origin, proxy);
+public class RoutingDataSourceProxyXA extends DataSourceProxyXA implements RoutingDataSource {
+    public RoutingDataSourceProxyXA(DataSource dataSource) {
+        super(dataSource);
     }
 
-    static SeataDataSourceProxy computeIfAbsent(DataSource origin, Function<DataSource, SeataDataSourceProxy> mappingFunction) {
-        return PROXY_MAP.computeIfAbsent(origin, mappingFunction);
+    public RoutingDataSourceProxyXA(DataSource dataSource, String resourceGroupId) {
+        super(dataSource, resourceGroupId);
     }
 
-    static SeataDataSourceProxy get(DataSource origin) {
-        return PROXY_MAP.get(origin);
+    @Override
+    public DataSource determineCurrentTarget() {
+        DataSource dataSource = ((RoutingDataSource) getTargetDataSource()).determineCurrentTarget();
+
+        if (dataSource instanceof SeataDataSourceProxy == false) {
+            dataSource = DataSourceProxyHolder.computeIfAbsent(dataSource, DataSourceProxyXA::new);
+        }
+
+        return dataSource;
     }
 }
