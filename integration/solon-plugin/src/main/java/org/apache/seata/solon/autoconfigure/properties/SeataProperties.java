@@ -18,7 +18,13 @@ package org.apache.seata.solon.autoconfigure.properties;
 
 import org.apache.seata.common.DefaultValues;
 import org.noear.solon.Solon;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 
+import static org.apache.seata.solon.autoconfigure.StarterConstants.SEATA_PREFIX;
+
+@Configuration
+@Inject(value = "${" + SEATA_PREFIX + "}",required = false)
 public class SeataProperties {
     /**
      * whether enable auto configuration

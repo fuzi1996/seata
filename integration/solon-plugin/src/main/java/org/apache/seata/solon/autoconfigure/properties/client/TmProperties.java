@@ -16,9 +16,14 @@
  */
 package org.apache.seata.solon.autoconfigure.properties.client;
 
-import static org.apache.seata.common.DefaultValues.*;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 
-//CLIENT_TM_PREFIX
+import static org.apache.seata.common.DefaultValues.*;
+import static org.apache.seata.solon.autoconfigure.StarterConstants.CLIENT_TM_PREFIX;
+
+@Configuration
+@Inject(value = "${" + CLIENT_TM_PREFIX + "}",required = false)
 public class TmProperties {
     private int commitRetryCount = DEFAULT_TM_COMMIT_RETRY_COUNT;
     private int rollbackRetryCount = DEFAULT_TM_ROLLBACK_RETRY_COUNT;

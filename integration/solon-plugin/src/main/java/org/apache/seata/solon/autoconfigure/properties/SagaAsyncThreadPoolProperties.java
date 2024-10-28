@@ -16,9 +16,16 @@
  */
 package org.apache.seata.solon.autoconfigure.properties;
 
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
+
+import static org.apache.seata.solon.autoconfigure.StarterConstants.SAGA_ASYNC_THREAD_POOL_PREFIX;
+
 /**
  * Saga state machine async thread pool properties.
  */
+@Configuration
+@Inject(value = "${" + SAGA_ASYNC_THREAD_POOL_PREFIX + "}",required = false)
 public class SagaAsyncThreadPoolProperties {
 
     /**

@@ -16,9 +16,14 @@
  */
 package org.apache.seata.solon.autoconfigure.properties.client;
 
-import static org.apache.seata.common.DefaultValues.*;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 
-//UNDO_PREFIX
+import static org.apache.seata.common.DefaultValues.*;
+import static org.apache.seata.solon.autoconfigure.StarterConstants.UNDO_PREFIX;
+
+@Configuration
+@Inject(value = "${" + UNDO_PREFIX + "}", required = false)
 public class UndoProperties {
     private boolean dataValidation = DEFAULT_TRANSACTION_UNDO_DATA_VALIDATION;
     private String logSerialization = DEFAULT_TRANSACTION_UNDO_LOG_SERIALIZATION;

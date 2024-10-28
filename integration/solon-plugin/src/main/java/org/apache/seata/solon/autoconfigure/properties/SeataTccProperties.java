@@ -16,6 +16,13 @@
  */
 package org.apache.seata.solon.autoconfigure.properties;
 
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
+
+import static org.apache.seata.solon.autoconfigure.StarterConstants.TCC_PREFIX;
+
+@Configuration
+@Inject(value = "${" + TCC_PREFIX + "}",required = false)
 public class SeataTccProperties {
     private String contextJsonParserType;
 

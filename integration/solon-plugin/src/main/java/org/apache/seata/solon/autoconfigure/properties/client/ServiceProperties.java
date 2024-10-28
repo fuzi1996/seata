@@ -16,12 +16,17 @@
  */
 package org.apache.seata.solon.autoconfigure.properties.client;
 
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.seata.common.DefaultValues.*;
+import static org.apache.seata.solon.autoconfigure.StarterConstants.SERVICE_PREFIX;
 
-//SERVICE_PREFIX
+@Configuration
+@Inject(value = "${" + SERVICE_PREFIX + "}",required = false)
 public class ServiceProperties {
     /**
      * vgroup->rgroup

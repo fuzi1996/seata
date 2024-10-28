@@ -19,6 +19,7 @@ package org.apache.seata.solon.integration;
 import org.apache.seata.solon.annotation.GlobalTransactionalInterceptor;
 import org.apache.seata.solon.annotation.datasource.SeataAutoDataSourceProxyCreator;
 import org.apache.seata.solon.autoconfigure.SeataAutoConfiguration;
+import org.apache.seata.solon.autoconfigure.properties.client.ServiceProperties;
 import org.apache.seata.solon.integration.intercept.SeataHttpExtension;
 import org.apache.seata.solon.integration.intercept.SeataNamiFilter;
 import org.apache.seata.solon.integration.intercept.SeataSolonRouterInterceptor;
@@ -42,9 +43,12 @@ import javax.sql.DataSource;
 public class SeataPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
-        //for config
-        context.beanMake(PropertiesAutoConfiguration.class);
-        context.beanMake(SeataAutoConfiguration.class);
+        context.getBeanAsync(ServiceProperties.class, bean->{
+            bean.afterPropertiesSet();
+        });
+
+        //for autoconfigure
+        context.beanScan(SeataAutoConfiguration.class);
 
         SeataProperties seataProperties = context.getBean(SeataProperties.class);
         SeataAutoDataSourceProxyCreator seataAutoDataSourceProxyCreator = new SeataAutoDataSourceProxyCreator(seataProperties.getDataSourceProxyMode());

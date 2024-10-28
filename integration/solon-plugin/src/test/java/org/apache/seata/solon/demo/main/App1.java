@@ -7,6 +7,6 @@ import org.noear.solon.Solon;
  */
 public class App1 {
     public static void main(String[] args) {
-        Solon.start(App1.class, new String[]{"--cfg=app1.yml"});
+        Solon.start(App1.class, new String[]{"--cfg=demo/app1.yml"});
     }
 }

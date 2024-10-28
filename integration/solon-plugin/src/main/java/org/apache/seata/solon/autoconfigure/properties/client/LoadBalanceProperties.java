@@ -16,11 +16,15 @@
  */
 package org.apache.seata.solon.autoconfigure.properties.client;
 
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 
 import static org.apache.seata.common.DefaultValues.DEFAULT_LOAD_BALANCE;
 import static org.apache.seata.common.DefaultValues.VIRTUAL_NODES_DEFAULT;
+import static org.apache.seata.solon.autoconfigure.StarterConstants.LOAD_BALANCE_PREFIX_KEBAB_STYLE;
 
-//LOAD_BALANCE_PREFIX_KEBAB_STYLE
+@Configuration
+@Inject(value = "${" + LOAD_BALANCE_PREFIX_KEBAB_STYLE + "}",required = false)
 public class LoadBalanceProperties {
     /**
      * the load balance

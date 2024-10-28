@@ -22,72 +22,11 @@ import org.apache.seata.solon.autoconfigure.properties.SeataTccProperties;
 import org.apache.seata.solon.autoconfigure.properties.client.*;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.annotation.Init;
-import org.noear.solon.annotation.Inject;
 
 import static org.apache.seata.solon.autoconfigure.StarterConstants.*;
 
-/**
- * 
- * @author noear 2024/10/25 created
- * */
 @Configuration
 public class PropertiesAutoConfiguration {
-    @Bean
-    public LoadBalanceProperties loadBalanceProperties(@Inject("${" + LOAD_BALANCE_PREFIX_KEBAB_STYLE + "}") LoadBalanceProperties properties) {
-        return properties;
-    }
-
-    @Bean
-    public LockProperties lockProperties(@Inject("${" + LOCK_PREFIX + "}") LockProperties properties) {
-        return properties;
-    }
-
-    @Bean
-    public RmProperties rmProperties(@Inject("${" + CLIENT_RM_PREFIX + "}") RmProperties properties) {
-        return properties;
-    }
-
-    @Bean
-    public ServiceProperties serviceProperties(@Inject("${" + SERVICE_PREFIX + "}") ServiceProperties properties) {
-        properties.afterPropertiesSet();
-        return properties;
-    }
-
-    @Bean
-    public TmProperties tmProperties(@Inject("${" + CLIENT_TM_PREFIX + "}") TmProperties properties) {
-        return properties;
-    }
-
-    @Bean
-    public UndoCompressProperties undoCompressProperties(@Inject("${" + COMPRESS_PREFIX + "}") UndoCompressProperties properties) {
-        return properties;
-    }
-
-    @Bean
-    public UndoProperties tmProperties(@Inject("${" + UNDO_PREFIX + "}") UndoProperties properties) {
-        return properties;
-    }
-
-    //////////////////////
-
-    @Bean
-    public SagaAsyncThreadPoolProperties sagaAsyncThreadPoolProperties(@Inject("${" + SAGA_ASYNC_THREAD_POOL_PREFIX + "}") SagaAsyncThreadPoolProperties properties) {
-        return properties;
-    }
-
-    @Bean
-    public SeataProperties seataProperties(@Inject("${" + SEATA_PREFIX + "}") SeataProperties properties) {
-        return properties;
-    }
-
-    @Bean
-    public SeataTccProperties seataTccProperties(@Inject("${" + TCC_PREFIX + "}") SeataTccProperties properties) {
-        return properties;
-    }
-
-    //////////////////////
-
     @Bean
     public void init() {
         PROPERTY_BEAN_MAP.put(SEATA_PREFIX, SeataProperties.class);

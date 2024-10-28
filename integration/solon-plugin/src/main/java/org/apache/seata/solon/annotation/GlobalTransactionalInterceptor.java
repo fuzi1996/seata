@@ -18,8 +18,13 @@ package org.apache.seata.solon.annotation;
 
 import org.apache.seata.integration.tx.api.interceptor.InvocationWrapper;
 import org.apache.seata.integration.tx.api.interceptor.handler.GlobalTransactionalInterceptorHandler;
+import org.apache.seata.integration.tx.api.interceptor.handler.ProxyInvocationHandler;
+import org.apache.seata.tm.api.FailureHandlerHolder;
 import org.noear.solon.core.aspect.Invocation;
 import org.noear.solon.core.aspect.MethodInterceptor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * GlobalTransactional annotation interceptor
@@ -27,16 +32,15 @@ import org.noear.solon.core.aspect.MethodInterceptor;
  * @author noear 2024/10/25 created
  */
 public class GlobalTransactionalInterceptor implements MethodInterceptor {
-    private final GlobalTransactionalInterceptorHandler globalTransactionalInterceptorHandler;
-
-    public GlobalTransactionalInterceptor() {
-        globalTransactionalInterceptorHandler = new GlobalTransactionalInterceptorHandler(null, null);
-    }
-
+    private final Set<String> methodsToProxy = new HashSet<>();
     @Override
     public Object doIntercept(Invocation inv) throws Throwable {
         InvocationWrapper invocationWrapper = new SolonInvocationWrapper(inv);
 
-        return this.globalTransactionalInterceptorHandler.invoke(invocationWrapper);
+        return this.createProxyInvocationHandler().invoke(invocationWrapper);
+    }
+
+    protected ProxyInvocationHandler createProxyInvocationHandler() {
+        return new GlobalTransactionalInterceptorHandler(FailureHandlerHolder.getFailureHandler(), methodsToProxy);
     }
 }

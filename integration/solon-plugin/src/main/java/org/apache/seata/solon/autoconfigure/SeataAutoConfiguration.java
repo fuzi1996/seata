@@ -22,21 +22,19 @@ import org.apache.seata.tm.api.DefaultFailureHandlerImpl;
 import org.apache.seata.tm.api.FailureHandler;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
+import org.noear.solon.annotation.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.apache.seata.common.ConfigurationKeys.SEATA_PREFIX;
 import static org.apache.seata.common.Constants.BEAN_NAME_FAILURE_HANDLER;
 
-/**
- * @author noear 2024/10/25 created
- */
+@Configuration
 @Condition(onProperty = "${"+SEATA_PREFIX+".enabled:true} = true")
-//@AutoConfigureAfter({SeataCoreAutoConfiguration.class})
 public class SeataAutoConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(SeataAutoConfiguration.class);
 
-    @Bean(BEAN_NAME_FAILURE_HANDLER)
+    @Bean(value = BEAN_NAME_FAILURE_HANDLER, typed = true)
     @Condition(onMissingBean = FailureHandler.class)
     public FailureHandler failureHandler() {
         return new DefaultFailureHandlerImpl();

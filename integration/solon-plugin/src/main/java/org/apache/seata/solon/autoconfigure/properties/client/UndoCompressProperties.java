@@ -17,8 +17,13 @@
 package org.apache.seata.solon.autoconfigure.properties.client;
 
 import org.apache.seata.common.DefaultValues;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 
-//COMPRESS_PREFIX
+import static org.apache.seata.solon.autoconfigure.StarterConstants.COMPRESS_PREFIX;
+
+@Configuration
+@Inject(value = "${" + COMPRESS_PREFIX + "}",required = false)
 public class UndoCompressProperties {
     private boolean enable = DefaultValues.DEFAULT_CLIENT_UNDO_COMPRESS_ENABLE;
     private String type = DefaultValues.DEFAULT_CLIENT_UNDO_COMPRESS_TYPE;

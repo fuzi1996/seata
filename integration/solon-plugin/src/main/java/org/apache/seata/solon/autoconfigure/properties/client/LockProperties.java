@@ -16,9 +16,14 @@
  */
 package org.apache.seata.solon.autoconfigure.properties.client;
 
-import static org.apache.seata.common.DefaultValues.*;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 
-//LOCK_PREFIX
+import static org.apache.seata.common.DefaultValues.*;
+import static org.apache.seata.solon.autoconfigure.StarterConstants.LOCK_PREFIX;
+
+@Configuration
+@Inject(value = "${" + LOCK_PREFIX + "}",required = false)
 public class LockProperties {
     private int retryInterval = DEFAULT_CLIENT_LOCK_RETRY_INTERVAL;
     private int retryTimes = DEFAULT_CLIENT_LOCK_RETRY_TIMES;

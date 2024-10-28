@@ -17,10 +17,14 @@
 package org.apache.seata.solon.autoconfigure.properties.client;
 
 import org.apache.seata.sqlparser.SqlParserType;
+import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 
 import static org.apache.seata.common.DefaultValues.*;
+import static org.apache.seata.solon.autoconfigure.StarterConstants.CLIENT_RM_PREFIX;
 
-//CLIENT_RM_PREFIX
+@Configuration
+@Inject(value = "${" + CLIENT_RM_PREFIX + "}",required = false)
 public class RmProperties {
     private int asyncCommitBufferLimit = DEFAULT_CLIENT_ASYNC_COMMIT_BUFFER_LIMIT;
     private int reportRetryCount = DEFAULT_CLIENT_REPORT_RETRY_COUNT;
