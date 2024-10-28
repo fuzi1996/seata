@@ -55,7 +55,7 @@
         <module>integration/http-jakarta</module>
         <module>integration/hsf</module>
         <module>integration/brpc</module>
-        <module>integration/seata-solon-plugin</module>
+        <module>integration/solon-plugin</module>
         <module>rm</module>
         <module>rm-datasource</module>
         <module>rocketmq</module>
