@@ -14,28 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.seata.solon.autoconfigure.properties;
+package org.apache.seata.solon.autoconfigure.properties.core;
 
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
-import static org.apache.seata.common.DefaultValues.DEFAULT_SHUTDOWN_TIMEOUT_SEC;
-import static org.apache.seata.solon.autoconfigure.StarterConstants.SHUTDOWN_PREFIX;
+import static org.apache.seata.common.DefaultValues.DEFAULT_LOG_EXCEPTION_RATE;
+import static org.apache.seata.solon.autoconfigure.StarterConstants.LOG_PREFIX;
 
 @Configuration
-@Inject(value = "${" + SHUTDOWN_PREFIX + "}",required = false)
-public class ShutdownProperties {
-    /**
-     * when destroy server, wait seconds
-     */
-    private int wait = DEFAULT_SHUTDOWN_TIMEOUT_SEC;
+@Inject(value = "${" + LOG_PREFIX + "}",required = false)
+public class LogProperties {
 
-    public int getWait() {
-        return wait;
+    private int exceptionRate = DEFAULT_LOG_EXCEPTION_RATE;
+
+    public int getExceptionRate() {
+        return exceptionRate;
     }
 
-    public ShutdownProperties setWait(int wait) {
-        this.wait = wait;
+    public LogProperties setExceptionRate(int exceptionRate) {
+        this.exceptionRate = exceptionRate;
         return this;
     }
 }

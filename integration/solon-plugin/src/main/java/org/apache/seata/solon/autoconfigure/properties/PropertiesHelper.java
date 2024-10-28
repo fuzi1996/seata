@@ -14,21 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.seata.solon.autoconfigure;
+package org.apache.seata.solon.autoconfigure.properties;
 
-import org.apache.seata.solon.autoconfigure.properties.*;
 import org.apache.seata.solon.autoconfigure.properties.client.*;
 import org.apache.seata.solon.autoconfigure.properties.config.*;
+import org.apache.seata.solon.autoconfigure.properties.core.LogProperties;
+import org.apache.seata.solon.autoconfigure.properties.core.ShutdownProperties;
+import org.apache.seata.solon.autoconfigure.properties.core.ThreadFactoryProperties;
+import org.apache.seata.solon.autoconfigure.properties.core.TransportProperties;
 import org.apache.seata.solon.autoconfigure.properties.registry.*;
-import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Configuration;
 
 import static org.apache.seata.solon.autoconfigure.StarterConstants.*;
 
-@Configuration
-public class PropertiesAutoConfiguration {
-    @Bean
-    public void init() {
+public class PropertiesHelper {
+    public static void initBeanMap() {
         PROPERTY_BEAN_MAP.put(CONFIG_PREFIX, ConfigProperties.class);
         PROPERTY_BEAN_MAP.put(CONFIG_FILE_PREFIX, ConfigFileProperties.class);
         PROPERTY_BEAN_MAP.put(REGISTRY_PREFIX, RegistryProperties.class);

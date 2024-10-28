@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.seata.solon.autoconfigure.properties;
+package org.apache.seata.solon.autoconfigure.properties.core;
 
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
