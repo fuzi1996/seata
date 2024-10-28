@@ -19,8 +19,10 @@ package org.apache.seata.solon.autoconfigure;
 import org.apache.seata.solon.autoconfigure.properties.SagaAsyncThreadPoolProperties;
 import org.apache.seata.solon.autoconfigure.properties.SeataProperties;
 import org.apache.seata.solon.autoconfigure.properties.SeataTccProperties;
+import org.apache.seata.solon.autoconfigure.properties.client.*;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Init;
 import org.noear.solon.annotation.Inject;
 
 import static org.apache.seata.solon.autoconfigure.StarterConstants.*;
@@ -32,17 +34,72 @@ import static org.apache.seata.solon.autoconfigure.StarterConstants.*;
 @Configuration
 public class PropertiesAutoConfiguration {
     @Bean
-    public SagaAsyncThreadPoolProperties sagaAsyncThreadPoolProperties(@Inject("${" + SAGA_ASYNC_THREAD_POOL_PREFIX + "}") SagaAsyncThreadPoolProperties sagaAsyncThreadPoolProperties) {
-        return sagaAsyncThreadPoolProperties;
+    public LoadBalanceProperties loadBalanceProperties(@Inject("${" + LOAD_BALANCE_PREFIX_KEBAB_STYLE + "}") LoadBalanceProperties properties) {
+        return properties;
     }
 
     @Bean
-    public SeataProperties seataProperties(@Inject("${" + SEATA_PREFIX + "}") SeataProperties seataProperties) {
-        return seataProperties;
+    public LockProperties lockProperties(@Inject("${" + LOCK_PREFIX + "}") LockProperties properties) {
+        return properties;
     }
 
     @Bean
-    public SeataTccProperties seataTccProperties(@Inject("${" + TCC_PREFIX + "}") SeataTccProperties seataTccProperties) {
-        return seataTccProperties;
+    public RmProperties rmProperties(@Inject("${" + CLIENT_RM_PREFIX + "}") RmProperties properties) {
+        return properties;
+    }
+
+    @Bean
+    public ServiceProperties serviceProperties(@Inject("${" + SERVICE_PREFIX + "}") ServiceProperties properties) {
+        properties.afterPropertiesSet();
+        return properties;
+    }
+
+    @Bean
+    public TmProperties tmProperties(@Inject("${" + CLIENT_TM_PREFIX + "}") TmProperties properties) {
+        return properties;
+    }
+
+    @Bean
+    public UndoCompressProperties undoCompressProperties(@Inject("${" + COMPRESS_PREFIX + "}") UndoCompressProperties properties) {
+        return properties;
+    }
+
+    @Bean
+    public UndoProperties tmProperties(@Inject("${" + UNDO_PREFIX + "}") UndoProperties properties) {
+        return properties;
+    }
+
+    //////////////////////
+
+    @Bean
+    public SagaAsyncThreadPoolProperties sagaAsyncThreadPoolProperties(@Inject("${" + SAGA_ASYNC_THREAD_POOL_PREFIX + "}") SagaAsyncThreadPoolProperties properties) {
+        return properties;
+    }
+
+    @Bean
+    public SeataProperties seataProperties(@Inject("${" + SEATA_PREFIX + "}") SeataProperties properties) {
+        return properties;
+    }
+
+    @Bean
+    public SeataTccProperties seataTccProperties(@Inject("${" + TCC_PREFIX + "}") SeataTccProperties properties) {
+        return properties;
+    }
+
+    //////////////////////
+
+    @Bean
+    public void init() {
+        PROPERTY_BEAN_MAP.put(SEATA_PREFIX, SeataProperties.class);
+
+        PROPERTY_BEAN_MAP.put(CLIENT_RM_PREFIX, RmProperties.class);
+        PROPERTY_BEAN_MAP.put(CLIENT_TM_PREFIX, TmProperties.class);
+        PROPERTY_BEAN_MAP.put(LOCK_PREFIX, LockProperties.class);
+        PROPERTY_BEAN_MAP.put(SERVICE_PREFIX, ServiceProperties.class);
+        PROPERTY_BEAN_MAP.put(UNDO_PREFIX, UndoProperties.class);
+        PROPERTY_BEAN_MAP.put(COMPRESS_PREFIX, UndoCompressProperties.class);
+        PROPERTY_BEAN_MAP.put(LOAD_BALANCE_PREFIX, LoadBalanceProperties.class);
+        PROPERTY_BEAN_MAP.put(SAGA_ASYNC_THREAD_POOL_PREFIX, SagaAsyncThreadPoolProperties.class);
+        PROPERTY_BEAN_MAP.put(TCC_PREFIX, SeataTccProperties.class);
     }
 }
