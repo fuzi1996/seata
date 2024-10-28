@@ -16,10 +16,10 @@
  */
 package org.apache.seata.solon.autoconfigure;
 
-import org.apache.seata.solon.autoconfigure.properties.SagaAsyncThreadPoolProperties;
-import org.apache.seata.solon.autoconfigure.properties.SeataProperties;
-import org.apache.seata.solon.autoconfigure.properties.SeataTccProperties;
+import org.apache.seata.solon.autoconfigure.properties.*;
 import org.apache.seata.solon.autoconfigure.properties.client.*;
+import org.apache.seata.solon.autoconfigure.properties.config.*;
+import org.apache.seata.solon.autoconfigure.properties.registry.*;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
 
@@ -29,6 +29,34 @@ import static org.apache.seata.solon.autoconfigure.StarterConstants.*;
 public class PropertiesAutoConfiguration {
     @Bean
     public void init() {
+        PROPERTY_BEAN_MAP.put(CONFIG_PREFIX, ConfigProperties.class);
+        PROPERTY_BEAN_MAP.put(CONFIG_FILE_PREFIX, ConfigFileProperties.class);
+        PROPERTY_BEAN_MAP.put(REGISTRY_PREFIX, RegistryProperties.class);
+
+        PROPERTY_BEAN_MAP.put(CONFIG_NACOS_PREFIX, ConfigNacosProperties.class);
+        PROPERTY_BEAN_MAP.put(CONFIG_CONSUL_PREFIX, ConfigConsulProperties.class);
+        PROPERTY_BEAN_MAP.put(CONFIG_ZK_PREFIX, ConfigZooKeeperProperties.class);
+        PROPERTY_BEAN_MAP.put(CONFIG_APOLLO_PREFIX, ConfigApolloProperties.class);
+        PROPERTY_BEAN_MAP.put(CONFIG_ETCD3_PREFIX, ConfigEtcd3Properties.class);
+        PROPERTY_BEAN_MAP.put(CONFIG_CUSTOM_PREFIX, ConfigCustomProperties.class);
+
+        PROPERTY_BEAN_MAP.put(REGISTRY_CONSUL_PREFIX, RegistryConsulProperties.class);
+        PROPERTY_BEAN_MAP.put(REGISTRY_ETCD3_PREFIX, RegistryEtcd3Properties.class);
+        PROPERTY_BEAN_MAP.put(REGISTRY_EUREKA_PREFIX, RegistryEurekaProperties.class);
+        PROPERTY_BEAN_MAP.put(REGISTRY_NACOS_PREFIX, RegistryNacosProperties.class);
+        PROPERTY_BEAN_MAP.put(REGISTRY_NAMINGSERVER_PREFIX, RegistryNamingServerProperties.class);
+        PROPERTY_BEAN_MAP.put(REGISTRY_REDIS_PREFIX, RegistryRedisProperties.class);
+        PROPERTY_BEAN_MAP.put(REGISTRY_SOFA_PREFIX, RegistrySofaProperties.class);
+        PROPERTY_BEAN_MAP.put(REGISTRY_ZK_PREFIX, RegistryZooKeeperProperties.class);
+        PROPERTY_BEAN_MAP.put(REGISTRY_CUSTOM_PREFIX, RegistryCustomProperties.class);
+        PROPERTY_BEAN_MAP.put(REGISTRY_RAFT_PREFIX, RegistryRaftProperties.class);
+
+        PROPERTY_BEAN_MAP.put(THREAD_FACTORY_PREFIX, ThreadFactoryProperties.class);
+        PROPERTY_BEAN_MAP.put(TRANSPORT_PREFIX, TransportProperties.class);
+        PROPERTY_BEAN_MAP.put(SHUTDOWN_PREFIX, ShutdownProperties.class);
+        PROPERTY_BEAN_MAP.put(LOG_PREFIX, LogProperties.class);
+
+
         PROPERTY_BEAN_MAP.put(SEATA_PREFIX, SeataProperties.class);
 
         PROPERTY_BEAN_MAP.put(CLIENT_RM_PREFIX, RmProperties.class);
