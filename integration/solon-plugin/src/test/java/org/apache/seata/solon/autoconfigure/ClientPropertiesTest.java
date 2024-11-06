@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.noear.solon.Solon;
-import org.noear.solon.core.AppContext;
 
 import java.util.Map;
 
@@ -33,13 +32,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ClientPropertiesTest {
-    static AppContext context;
-
     @BeforeAll
     public static void initContext() {
-        System.setProperty(ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION, "true");
-        Solon.startBlock(app -> {
-            context = app.context();
+        Solon.start(ClientPropertiesTest.class, app -> {
+            System.setProperty(ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION, "true");
+
+            app.enableHttp(false);
+            app.enableScanning(false);
             app.context().beanScan("org.apache.seata.solon.autoconfigure.properties");
         });
     }
@@ -52,36 +51,36 @@ public class ClientPropertiesTest {
 
     @Test
     public void testSeataProperties() {
-        assertTrue(context.getBean(SeataProperties.class).isEnabled());
-        assertNotNull(context.getBean(SeataProperties.class).getApplicationId());
-        assertEquals(DEFAULT_TX_GROUP, context.getBean(SeataProperties.class).getTxServiceGroup());
-        assertTrue(context.getBean(SeataProperties.class).isEnableAutoDataSourceProxy());
-        assertEquals("AT", context.getBean(SeataProperties.class).getDataSourceProxyMode());
-        assertFalse(context.getBean(SeataProperties.class).isUseJdkProxy());
+        assertTrue(Solon.context().getBean(SeataProperties.class).isEnabled());
+        assertNotNull(Solon.context().getBean(SeataProperties.class).getApplicationId());
+        assertEquals(DEFAULT_TX_GROUP, Solon.context().getBean(SeataProperties.class).getTxServiceGroup());
+        assertTrue(Solon.context().getBean(SeataProperties.class).isEnableAutoDataSourceProxy());
+        assertEquals("AT", Solon.context().getBean(SeataProperties.class).getDataSourceProxyMode());
+        assertFalse(Solon.context().getBean(SeataProperties.class).isUseJdkProxy());
     }
 
 
     @Test
     public void testLockProperties() {
-        assertEquals(10, context.getBean(LockProperties.class).getRetryInterval());
-        assertEquals(30, context.getBean(LockProperties.class).getRetryTimes());
-        assertTrue(context.getBean(LockProperties.class).isRetryPolicyBranchRollbackOnConflict());
+        assertEquals(10, Solon.context().getBean(LockProperties.class).getRetryInterval());
+        assertEquals(30, Solon.context().getBean(LockProperties.class).getRetryTimes());
+        assertTrue(Solon.context().getBean(LockProperties.class).isRetryPolicyBranchRollbackOnConflict());
     }
 
     @Test
     public void testRmProperties() {
-        Assertions.assertEquals(10000, context.getBean(RmProperties.class).getAsyncCommitBufferLimit());
-        assertEquals(5, context.getBean(RmProperties.class).getReportRetryCount());
-        assertTrue(context.getBean(RmProperties.class).isTableMetaCheckEnable());
-        assertFalse(context.getBean(RmProperties.class).isReportSuccessEnable());
-        assertEquals(60000L,context.getBean(RmProperties.class).getTableMetaCheckerInterval());
-        assertFalse(context.getBean(RmProperties.class).isSagaRetryPersistModeUpdate());
-        assertFalse(context.getBean(RmProperties.class).isSagaCompensatePersistModeUpdate());
+        Assertions.assertEquals(10000, Solon.context().getBean(RmProperties.class).getAsyncCommitBufferLimit());
+        assertEquals(5, Solon.context().getBean(RmProperties.class).getReportRetryCount());
+        assertTrue(Solon.context().getBean(RmProperties.class).isTableMetaCheckEnable());
+        assertFalse(Solon.context().getBean(RmProperties.class).isReportSuccessEnable());
+        assertEquals(60000L, Solon.context().getBean(RmProperties.class).getTableMetaCheckerInterval());
+        assertFalse(Solon.context().getBean(RmProperties.class).isSagaRetryPersistModeUpdate());
+        assertFalse(Solon.context().getBean(RmProperties.class).isSagaCompensatePersistModeUpdate());
     }
 
     @Test
     public void testServiceProperties() {
-        ServiceProperties serviceProperties = context.getBean(ServiceProperties.class);
+        ServiceProperties serviceProperties = Solon.context().getBean(ServiceProperties.class);
         Map<String, String> vgroupMapping = serviceProperties.getVgroupMapping();
         Map<String, String> grouplist = serviceProperties.getGrouplist();
         assertEquals("default", vgroupMapping.get(DEFAULT_TX_GROUP));
@@ -92,22 +91,21 @@ public class ClientPropertiesTest {
 
     @Test
     public void testTmProperties() {
-        assertEquals(DEFAULT_TM_COMMIT_RETRY_COUNT, context.getBean(TmProperties.class).getCommitRetryCount());
-        assertEquals(DEFAULT_TM_ROLLBACK_RETRY_COUNT, context.getBean(TmProperties.class).getRollbackRetryCount());
-        assertEquals(DEFAULT_GLOBAL_TRANSACTION_TIMEOUT, context.getBean(TmProperties.class).getDefaultGlobalTransactionTimeout());
+        assertEquals(DEFAULT_TM_COMMIT_RETRY_COUNT, Solon.context().getBean(TmProperties.class).getCommitRetryCount());
+        assertEquals(DEFAULT_TM_ROLLBACK_RETRY_COUNT, Solon.context().getBean(TmProperties.class).getRollbackRetryCount());
+        assertEquals(DEFAULT_GLOBAL_TRANSACTION_TIMEOUT, Solon.context().getBean(TmProperties.class).getDefaultGlobalTransactionTimeout());
     }
 
     @Test
     public void testUndoProperties() {
-        assertTrue(context.getBean(UndoProperties.class).isDataValidation());
-        assertEquals("jackson", context.getBean(UndoProperties.class).getLogSerialization());
-        assertEquals(DEFAULT_TRANSACTION_UNDO_LOG_TABLE, context.getBean(UndoProperties.class).getLogTable());
+        assertTrue(Solon.context().getBean(UndoProperties.class).isDataValidation());
+        assertEquals("jackson", Solon.context().getBean(UndoProperties.class).getLogSerialization());
+        assertEquals(DEFAULT_TRANSACTION_UNDO_LOG_TABLE, Solon.context().getBean(UndoProperties.class).getLogTable());
     }
 
     @Test
     public void testLoadBalanceProperties() {
-        assertEquals("XID", context.getBean(LoadBalanceProperties.class).getType());
-        assertEquals(10, context.getBean(LoadBalanceProperties.class).getVirtualNodes());
+        assertEquals("XID", Solon.context().getBean(LoadBalanceProperties.class).getType());
+        assertEquals(10, Solon.context().getBean(LoadBalanceProperties.class).getVirtualNodes());
     }
-
 }

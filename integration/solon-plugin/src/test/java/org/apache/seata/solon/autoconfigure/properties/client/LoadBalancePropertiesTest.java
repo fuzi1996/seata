@@ -37,8 +37,11 @@ import static org.mockito.Mockito.mock;
 public class LoadBalancePropertiesTest {
     @BeforeAll
     public static void initContext() {
-        System.setProperty(ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION, "true");
-        Solon.startBlock(app -> {
+        Solon.start(LoadBalancePropertiesTest.class, app -> {
+            System.setProperty(ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION, "true");
+
+            app.enableHttp(false);
+            app.enableScanning(false);
             app.context().wrapAndPut(LoadBalanceProperties.class, loadBalanceProperties());
         });
     }
