@@ -43,7 +43,7 @@ import javax.sql.DataSource;
 public class SeataPlugin implements Plugin {
     @Override
     public void start(AppContext context) throws Throwable {
-        context.getBeanAsync(ServiceProperties.class, bean->{
+        context.getBeanAsync(ServiceProperties.class, bean -> {
             bean.afterPropertiesSet();
         });
 

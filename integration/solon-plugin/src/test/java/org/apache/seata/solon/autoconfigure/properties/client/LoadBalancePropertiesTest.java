@@ -25,7 +25,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.noear.solon.Solon;
+import org.noear.solon.SimpleSolonApp;
 
 import static org.apache.seata.solon.autoconfigure.StarterConstants.LOAD_BALANCE_PREFIX;
 import static org.apache.seata.solon.autoconfigure.StarterConstants.PROPERTY_BEAN_MAP;
@@ -35,9 +35,11 @@ import static org.mockito.Mockito.mock;
 /**
  **/
 public class LoadBalancePropertiesTest {
+    static SimpleSolonApp solonApp;
+
     @BeforeAll
-    public static void initContext() {
-        Solon.start(LoadBalancePropertiesTest.class, app -> {
+    public static void initContext() throws Throwable {
+        solonApp = new SimpleSolonApp(LoadBalancePropertiesTest.class).start(app -> {
             System.setProperty(ConfigurationKeys.DISABLE_GLOBAL_TRANSACTION, "true");
 
             app.enableHttp(false);
@@ -48,7 +50,7 @@ public class LoadBalancePropertiesTest {
 
     @AfterAll
     public static void closeContext() {
-        Solon.stopBlock();
+        solonApp.stop();
     }
 
     public static LoadBalanceProperties loadBalanceProperties() {
