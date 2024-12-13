@@ -46,7 +46,7 @@ public class TransportProperties {
      */
     private String compressor = "none";
 
-    private String protocol = DEFAULT_PROTOCOL;
+    private String protocol = "seata";
 
     /**
      * enable client batch send request
