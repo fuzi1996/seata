@@ -41,13 +41,7 @@
         <!--seata-->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>seata-tm</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>seata-integration-tx-api</artifactId>
+            <artifactId>seata-all</artifactId>
             <version>${project.version}</version>
         </dependency>
 
