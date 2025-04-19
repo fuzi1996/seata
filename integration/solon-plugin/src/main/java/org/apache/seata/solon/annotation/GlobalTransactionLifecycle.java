@@ -24,14 +24,25 @@ import org.apache.seata.core.constants.ConfigurationKeys;
 import org.apache.seata.core.rpc.ShutdownHook;
 import org.apache.seata.core.rpc.netty.RmNettyRemotingClient;
 import org.apache.seata.core.rpc.netty.TmNettyRemotingClient;
+import org.apache.seata.integration.tx.api.interceptor.handler.ProxyInvocationHandler;
+import org.apache.seata.integration.tx.api.interceptor.parser.DefaultInterfaceParser;
 import org.apache.seata.rm.RMClient;
+import org.apache.seata.rm.tcc.api.TwoPhaseBusinessAction;
+import org.apache.seata.spring.annotation.GlobalLock;
+import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.apache.seata.tm.TMClient;
 import org.apache.seata.tm.api.FailureHandler;
 import org.apache.seata.tm.api.FailureHandlerHolder;
+import org.noear.solon.core.AppContext;
+import org.noear.solon.core.BeanWrap;
 import org.noear.solon.core.bean.LifecycleBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.apache.seata.common.DefaultValues.*;
@@ -61,7 +72,6 @@ public class GlobalTransactionLifecycle implements CachedConfigurationChangeList
     private final AtomicBoolean initialized = new AtomicBoolean(false);
 
     private final FailureHandler failureHandlerHook;
-
 
     /**
      * Instantiates a new Global transaction scanner.

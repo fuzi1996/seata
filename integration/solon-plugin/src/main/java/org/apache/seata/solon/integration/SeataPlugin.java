@@ -16,15 +16,19 @@
  */
 package org.apache.seata.solon.integration;
 
+import org.apache.seata.rm.tcc.api.LocalTCC;
+import org.apache.seata.rm.tcc.api.TwoPhaseBusinessAction;
+import org.apache.seata.solon.annotation.AdapterSolonSeaterInterceptor;
 import org.apache.seata.solon.annotation.GlobalTransactionalInterceptor;
+import org.apache.seata.solon.annotation.TccActionInterceptor;
 import org.apache.seata.solon.annotation.datasource.SeataAutoDataSourceProxyCreator;
-import org.apache.seata.solon.autoconfigure.properties.PropertiesHelper;
 import org.apache.seata.solon.autoconfigure.SeataAutoConfiguration;
+import org.apache.seata.solon.autoconfigure.properties.PropertiesHelper;
+import org.apache.seata.solon.autoconfigure.properties.SeataProperties;
 import org.apache.seata.solon.autoconfigure.properties.client.ServiceProperties;
 import org.apache.seata.solon.integration.intercept.SeataHttpExtension;
 import org.apache.seata.solon.integration.intercept.SeataNamiFilter;
 import org.apache.seata.solon.integration.intercept.SeataSolonRouterInterceptor;
-import org.apache.seata.solon.autoconfigure.properties.SeataProperties;
 import org.apache.seata.spring.annotation.GlobalLock;
 import org.apache.seata.spring.annotation.GlobalTransactional;
 import org.noear.nami.NamiManager;
@@ -78,5 +82,14 @@ public class SeataPlugin implements Plugin {
         GlobalTransactionalInterceptor globalTransactionalInterceptor = new GlobalTransactionalInterceptor();
         context.beanInterceptorAdd(GlobalLock.class, globalTransactionalInterceptor);
         context.beanInterceptorAdd(GlobalTransactional.class, globalTransactionalInterceptor);
+
+        TccActionInterceptor tccActionInterceptor = new TccActionInterceptor();
+        context.beanInterceptorAdd(TwoPhaseBusinessAction.class, tccActionInterceptor);
+
+        AdapterSolonSeaterInterceptor adapterSolonSeaterInterceptor = new AdapterSolonSeaterInterceptor();
+        context.beanInterceptorAdd(GlobalLock.class, adapterSolonSeaterInterceptor);
+        context.beanInterceptorAdd(GlobalTransactional.class, adapterSolonSeaterInterceptor);
+        context.beanInterceptorAdd(LocalTCC.class, adapterSolonSeaterInterceptor);
+        context.beanInterceptorAdd(TwoPhaseBusinessAction.class, adapterSolonSeaterInterceptor);
     }
 }
