@@ -21,17 +21,10 @@ import org.apache.seata.saga.engine.StateMachineConfig;
 import org.apache.seata.saga.engine.expression.ExpressionFactoryManager;
 import org.apache.seata.saga.engine.expression.ExpressionResolver;
 import org.apache.seata.saga.engine.expression.exception.ExceptionMatchExpressionFactory;
-import org.apache.seata.saga.engine.expression.impl.DefaultExpressionResolver;
 import org.apache.seata.saga.engine.expression.seq.SequenceExpressionFactory;
+import org.apache.seata.saga.engine.expression.snel.DefaultExpressionResolver;
 import org.apache.seata.saga.engine.invoker.ServiceInvokerManager;
-import org.apache.seata.saga.engine.pcext.InterceptableStateHandler;
-import org.apache.seata.saga.engine.pcext.InterceptableStateRouter;
-import org.apache.seata.saga.engine.pcext.StateHandler;
-import org.apache.seata.saga.engine.pcext.StateHandlerInterceptor;
-import org.apache.seata.saga.engine.pcext.StateMachineProcessHandler;
-import org.apache.seata.saga.engine.pcext.StateMachineProcessRouter;
-import org.apache.seata.saga.engine.pcext.StateRouter;
-import org.apache.seata.saga.engine.pcext.StateRouterInterceptor;
+import org.apache.seata.saga.engine.pcext.*;
 import org.apache.seata.saga.engine.repo.StateLogRepository;
 import org.apache.seata.saga.engine.repo.StateMachineRepository;
 import org.apache.seata.saga.engine.repo.impl.StateLogRepositoryImpl;
@@ -63,11 +56,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import static org.apache.seata.common.DefaultValues.DEFAULT_CLIENT_REPORT_SUCCESS_ENABLE;
-import static org.apache.seata.common.DefaultValues.DEFAULT_CLIENT_SAGA_BRANCH_REGISTER_ENABLE;
-import static org.apache.seata.common.DefaultValues.DEFAULT_CLIENT_SAGA_COMPENSATE_PERSIST_MODE_UPDATE;
-import static org.apache.seata.common.DefaultValues.DEFAULT_CLIENT_SAGA_RETRY_PERSIST_MODE_UPDATE;
-import static org.apache.seata.common.DefaultValues.DEFAULT_SAGA_JSON_PARSER;
+import static org.apache.seata.common.DefaultValues.*;
 
 /**
  * Abstract StateMachineConfig
